@@ -60,8 +60,8 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
-	newArr=[]
-	for(key in obj){
+	var newArr=[]
+	for(var key in obj){
 		newArr.push(key.toUpperCase())
 	}return newArr
 } 
@@ -72,16 +72,17 @@ function upperProps(obj) {
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
 function slice(array, from, to) {
-  var newArr=[];
-  var counter=0;
- for(i=0;i<array.length;i++){
- if (i >from-1 && counter != to ) {
-   newArr.push(array[i])
-   counter ++
- }
- } return newArr
- 
- }
+	var newArr = [];
+	var counter = 0;
+	for (var i = 0; i < array.length; i++) {
+	  if (i > from - 1 && counter != to) {
+		newArr.push(array[i]);
+		counter++;
+	  }
+	}
+	return newArr;
+  }
+  
 
 /*
  Задание 6 *:
