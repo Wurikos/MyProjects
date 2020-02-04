@@ -1,51 +1,102 @@
+/* ДЗ 2 - работа с массивами и объектами */
 
-function returnFirstArgument(a) {
-  return a;
-};
-returnFirstArgument('Привет');
+/*
+ Задание 1:
 
-function sumWithDefaults(a, b=100) {
-  return a+b ;
-};
+ Напишите аналог встроенного метода forEach для работы с массивами
+ Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
+ */
+function forEach(array,fn) {
+	
+	for(i=0;i<array.length;i++){
+		fn(array[i], i, array)
+	}
+}
 
-function returnFnResult(rest, a) {
-  return rest(a);
-}; 
+/*
+ Задание 2:
+
+ Напишите аналог встроенного метода map для работы с массивами
+ Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
+ */
+function map(array, fn) {
+	
+	newArr=[];
+	
+	for(i = 0;i < array.length; i++){
+		
+		 array[i] += 2
+	}
+	return 	newArr=array
+}
+
+
+
+// function map(array, fn) {
+//     let results = []; 
+//     for (let i = 0; i < array.length; i++ ) { 
+//         let item = fn(array[i], i, array); 
+
+//         results.push(item); 
+//     }
+//     return results; 
+// }
+/*
+ Задание 3:
+
+ Напишите аналог встроенного метода reduce для работы с массивами
+ Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
+ */
+function reduce(array, fn, initial) {
   
-function returnCounter(number = 0) {
-  return function() {
-	  return ++number
-};
-};
-var f = returnCounter(10);
-console.log(f());
-console.log(f());
-console.log(f());
-function returnArgumentsArray() {
-	var arr=[];
-  
-  for(var i = 0; i < arguments.length; i++) {
-		arr.push(arguments[i])
-	} return arr
-};
-console.log(returnArgumentsArray(1,2,3,4))
+}
 
-function sum(a,b) {
-  return a+b;
-};
-var newSum = bindFunction(sum, 2, 4);
-function bindFunction(a, b, c) {	
-  return function() {
-	  return a(b,c)
-	};
-};
-console.log(newSum());
+/*
+ Задание 4:
+
+ Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистр и вернуть в виде массива
+
+ Пример:
+   upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
+ */
+function upperProps(obj) {
+	newArr=[]
+	for(key in obj){
+		newArr.push(key.toUpperCase())
+	}return newArr
+} 
+/*
+ Задание 5 *:
+
+ Напишите аналог встроенного метода slice для работы с массивами
+ Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
+ */
+function slice(array, from, to) {
+  var newArr=[];
+  var counter=0;
+ for(i=0;i<array.length;i++){
+ if (i >from-1 && counter != to ) {
+   newArr.push(array[i])
+   counter ++
+ }
+ } return newArr
+ 
+ }
+
+/*
+ Задание 6 *:
+
+ Функция принимает объект и должна вернуть Proxy для этого объекта
+ Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
+ */
+function createProxy(obj) {
+}
 
 export {
-    returnFirstArgument,
-    sumWithDefaults,
-    returnArgumentsArray,
-    returnFnResult,
-    returnCounter,
-    bindFunction
+    forEach,
+    map,
+    reduce,
+    upperProps,
+    slice,
+    createProxy
 };
