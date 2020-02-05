@@ -8,7 +8,7 @@
  */
 function forEach(array,fn) {
 	
-	for(i=0;i<array.length;i++){
+	for(var i=0;i<array.length;i++){
 		fn(array[i], i, array)
 	}
 }
@@ -20,27 +20,17 @@ function forEach(array,fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
+	var result=[];
 	
-	newArr=[];
-	
-	for(i = 0;i < array.length; i++){
+	for(var i = 0;i < array.length; i++){
 		
-		 array[i] += 2
+		let newArr = fn(array[i], i, array);
+		result.push(newArr); 
 	}
-	return 	newArr=array
+	return 	result
 }
 
 
-
-// function map(array, fn) {
-//     let results = []; 
-//     for (let i = 0; i < array.length; i++ ) { 
-//         let item = fn(array[i], i, array); 
-
-//         results.push(item); 
-//     }
-//     return results; 
-// }
 /*
  Задание 3:
 
@@ -48,7 +38,14 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
-  
+    let i = 0;
+    let result = initial || array[i++];
+
+    while (i < array.length) {
+        result = fn(result, array[i], i, array);
+        i++;
+    }
+    return result;
 }
 
 /*
@@ -73,13 +70,17 @@ function upperProps(obj) {
  */
 function slice(array, from, to) {
 	var newArr = [];
-	var counter = 0;
-	for (var i = 0; i < array.length; i++) {
-	  if (i > from - 1 && counter != to) {
+  
+	for (var i = from; i < to; i++) {
+	  if (from > 0 && to > 0) {
 		newArr.push(array[i]);
-		counter++;
+	  } else if (from < 0) {
+		newArr.push(array[i] - from);
+	  } else if (to > 0) {
+		newArr.push(array[i] - to);
 	  }
 	}
+  
 	return newArr;
   }
   
