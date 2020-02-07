@@ -37,7 +37,9 @@ function map(array, fn) {
  Напишите аналог встроенного метода reduce для работы с массивами
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
-function reduce(array, fn, initial) {
+
+
+ function reduce(array, fn, initial) {
     let i = 0;
     let result = initial || array[i++];
 
@@ -47,6 +49,9 @@ function reduce(array, fn, initial) {
     }
     return result;
 }
+
+
+
 
 /*
  Задание 4:
@@ -70,20 +75,22 @@ function upperProps(obj) {
  */
 function slice(array, from, to) {
 	var newArr = [];
+	if (to < 0) {
+	  to = array.length + to;
+  
+	  if (from < 0) {
+		from = array.length + from;
+	  }
+	}
   
 	for (var i = from; i < to; i++) {
-	  if (from > 0 && to > 0) {
+	  if (from >= 0 && to >= 0) {
 		newArr.push(array[i]);
-	  } else if (from < 0) {
-		newArr.push(array[i] - from);
-	  } else if (to > 0) {
-		newArr.push(array[i] - to);
 	  }
 	}
   
 	return newArr;
   }
-  
 
 /*
  Задание 6 *:
