@@ -99,6 +99,16 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+  if (where.childNodes.length === 0) {
+      return where;
+  }
+  let el = where.childNodes;
+
+  for (let item of el) {
+      if (item.nodeType === 3) {
+          where.removeChild(item);
+      }
+  }
 }
 
 /*
@@ -113,7 +123,26 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+  if (where.childNodes.length === 0) {
+    return where;
+  }
+
+  let arr = where.childNodes;
+
+  if (arr.length > 0) {
+    Array.from(arr).forEach(item => {
+      if (item.nodeType === 3) {
+        let parent = item.parentNode;
+
+        parent.removeChild(item);
+      }
+      if (item) {
+        deleteTextNodesRecursive(item);
+      }
+    });
+  }
 }
+
 
 /*
  Задание 7 *:
