@@ -41,29 +41,32 @@ function loadTowns() {
     const xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
-      "https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json"
+      "https://raw.githubusercontent.com/smelukov/citiesTest/master/citie.json"
     );
     xhr.responseType = "json";
     xhr.send();
     xhr.addEventListener("load", () => {
-      resolve(
-        xhr.response.sort(function(a, b) {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-        })
-      );
+      if (xhr.status === 200) {
+        resolve(
+          xhr.response.sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1;
+            }
+            if (a.name < b.name) {
+              return -1;
+            }
+            return 0;
+          })
+        );
+      } else {
+        reject();
+      }
     });
-    xhr.addEventListener("error", () =>{
-      reject()
-    })
+    xhr.addEventListener("error", () => {
+      reject();
+    });
   });
-} 
-
+}
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -80,60 +83,54 @@ function isMatching(full, chunk) {
   full = full.toLowerCase();
   chunk = chunk.toLowerCase();
 
-  if(full.indexOf(chunk)!== -1){
-    return true
+  if (full.indexOf(chunk) !== -1) {
+    return true;
   }
-  return false
-
+  return false;
 }
 
 /* Блок с надписью "Загрузка" */
-const loadingBlock = homeworkContainer.querySelector('#loading-block');
+const loadingBlock = homeworkContainer.querySelector("#loading-block");
 /* Блок с текстовым полем и результатом поиска */
-const filterBlock = homeworkContainer.querySelector('#filter-block');
+const filterBlock = homeworkContainer.querySelector("#filter-block");
 /* Текстовое поле для поиска по городам */
-const filterInput = homeworkContainer.querySelector('#filter-input');
+const filterInput = homeworkContainer.querySelector("#filter-input");
 /* Блок с результатами поиска */
-const filterResult = homeworkContainer.querySelector('#filter-result');
+const filterResult = homeworkContainer.querySelector("#filter-result");
 
-loadTowns()
-.then( (towns) =>{
-  loadingBlock.style.display = 'none';
-  filterBlock.style.display = 'block';
-  
-  filterInput.addEventListener('keyup', function() {
-    // это обработчик нажатия кливиш в текстовом поле
-    let value = filterInput.value.trim()
-    filterResult.innerHTML = '';
-   
-    if(!value) return;
-       
-    towns.forEach(town => {
-      var townName = town.name;
-      
-      if(isMatching(townName, value)){
-        filterResult.innerHTML += `<div>${townName}</div>`;
-      } 
+(function load() {
+  loadTowns()
+    .then(towns => {
+      loadingBlock.style.display = "none";
+      filterBlock.style.display = "block";
+
+      filterInput.addEventListener("keyup", function() {
+        // это обработчик нажатия кливиш в текстовом поле
+        let value = filterInput.value.trim();
+        filterResult.innerHTML = "";
+
+        if (!value) return;
+
+        towns.forEach(town => {
+          var townName = town.name;
+
+          if (isMatching(townName, value)) {
+            filterResult.innerHTML += `<div>${townName}</div>`;
+          }
+        });
+      });
+    })
+    .catch(function() {
+      var reloadBtn = document.createElement("button");
+
+      reloadBtn.textContent = "повторить";
+      homeworkContainer.appendChild(reloadBtn);
+      reloadBtn.addEventListener("click", () => {
+        reloadBtn.remove();
+        load();
+      });
+      loadingBlock.textContent = "Не удалось загрузить города";
     });
+})();
 
-});
-},loadError())
-
-
-function loadError() {
-  var reloadBtn = document.createElement('button')
-
-  reloadBtn.textContent = 'повторить';
-  homeworkContainer.appendChild(reloadBtn);
-  reloadBtn.addEventListener('click', () => {
-      reloadBtn.remove();
-      loadTowns();
-  });
-  loadingBlock.textContent = "Не удалось загрузить города"; 
-
-}
-
-export {
-    loadTowns,
-    isMatching
-};
+export { loadTowns, isMatching };
