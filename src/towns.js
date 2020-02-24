@@ -58,8 +58,12 @@ function loadTowns() {
         })
       );
     });
+    xhr.addEventListener("error", () =>{
+      reject()
+    })
   });
-}
+} 
+
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -92,9 +96,42 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
-filterInput.addEventListener('keyup', function() {
+loadTowns()
+.then( (towns) =>{
+  loadingBlock.style.display = 'none';
+  filterBlock.style.display = 'block';
+  
+  filterInput.addEventListener('keyup', function() {
     // это обработчик нажатия кливиш в текстовом поле
+    let value = filterInput.value.trim()
+    filterResult.innerHTML = '';
+   
+    if(!value) return;
+       
+    towns.forEach(town => {
+      var townName = town.name;
+      
+      if(isMatching(townName, value)){
+        filterResult.innerHTML += `<div>${townName}</div>`;
+      } 
+    });
+
 });
+},loadError())
+
+
+function loadError() {
+  var reloadBtn = document.createElement('button')
+
+  reloadBtn.textContent = 'повторить';
+  homeworkContainer.appendChild(reloadBtn);
+  reloadBtn.addEventListener('click', () => {
+      reloadBtn.remove();
+      loadTowns();
+  });
+  loadingBlock.textContent = "Не удалось загрузить города"; 
+
+}
 
 export {
     loadTowns,
